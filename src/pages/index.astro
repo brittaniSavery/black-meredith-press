@@ -1,5 +1,10 @@
 ---
+// Supports weights 300-900
+import "@fontsource-variable/darker-grotesque";
+import "@fontsource/darker-grotesque";
+import "@fontsource/cormorant-sc";
 
+const currentYear = new Date().getFullYear();
 ---
 
 <html lang="en">
@@ -11,9 +16,28 @@
     <meta name="generator" content={Astro.generator} />
     <title>Black Meredith Press</title>
   </head>
-  <body>
-    <main class="max-w-screen-xl flex place-content-center">
-      <h1>Astro</h1>
+  <body
+    class="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-300 font-medium text-lg min-h-screen"
+  >
+    <main class="px-4 py-6 md:container md:mx-auto flex flex-col items-center">
+      <picture class="w-1/2 sm:w-1/3 lg:w-1/4">
+        <source
+          srcset="logo-light.svg"
+          media="(prefers-color-scheme: light) or (prefers-color-scheme: no-preference)"
+        />
+        <source srcset="logo-dark.svg" media="(prefers-color-scheme: dark)" />
+        <img src="logo-light.svg" alt="Black Meredith Press Logo" />
+      </picture>
+      <h1 class="text-5xl font-serif">Black Meredith Press</h1>
+      <p class="text-2xl">an Independent Book Publishing Company</p>
+      <p class="mt-4 md:text-justify">Intro goes here</p>
     </main>
+    <footer
+      class="flex items-center justify-center sticky top-[100vh] h-10 border-t border-t-zinc-900/10 dark:border-t-zinc-200/10"
+    >
+      <p class="text-sm">
+        &copy; {currentYear} Black Meredith Press
+      </p>
+    </footer>
   </body>
 </html>
