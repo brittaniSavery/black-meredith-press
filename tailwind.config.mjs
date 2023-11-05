@@ -14,6 +14,11 @@ export default {
         ],
         serif: ["Cormorant SC", ...defaultTheme.fontFamily.serif],
       },
+      spacing: {
+        "quarter-screen": "25vh",
+        "half-screen": "50vh",
+        screen: "100vh",
+      },
     },
   },
   plugins: [],

@@ -1,0 +1,19 @@
+---
+import clsx from "clsx";
+
+interface Props {
+  header?: boolean;
+  classes?: string;
+}
+
+const { header, classes } = Astro.props;
+---
+
+<div
+  class={clsx(
+    "bg-white dark:bg-zinc-900 w-full py-6 px-12 lg:py-12 lg:px-24 mb-screen last:mb-half-screen",
+    classes
+  )}
+>
+  <slot />
+</div>
