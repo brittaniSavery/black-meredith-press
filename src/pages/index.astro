@@ -1,16 +1,18 @@
 ---
 // fonts
 import "@fontsource-variable/darker-grotesque";
-import "@fontsource/darker-grotesque";
 import "@fontsource/cormorant-sc";
+import "@fontsource/darker-grotesque";
 
+import { getCollection } from "astro:content";
+
+import Section from "../components/Section.astro";
 import H1 from "../components/H1.astro";
-import Div from "../components/Div.astro";
-
-import authors from "../lib/authors.json";
-import Author from "../components/Author.astro";
+import AuthorCard from "../components/AuthorCard.astro";
+import Prose from "../components/Prose.astro";
 
 const currentYear = new Date().getFullYear();
+const authors = await getCollection("authors");
 ---
 
 <html lang="en">
@@ -44,9 +46,9 @@ const currentYear = new Date().getFullYear();
       crossorigin="anonymous"></script>
   </head>
   <body
-    class="bg-[url('/img/background-light.png')] bg-no-repeat bg-center bg-cover bg-fixed bg-zinc-300 text-zinc-900 dark:bg-none dark:bg-zinc-900 dark:text-zinc-300 font-medium text-xl min-h-screen m-0"
+    class="bg-[url('/img/background-light.png')] bg-no-repeat bg-center bg-cover bg-fixed bg-zinc-300 text-zinc-900 dark:bg-none dark:bg-zinc-900 dark:text-zinc-300 font-medium text-xl lg:text-2xl min-h-screen m-0"
   >
-    <main class="md:mx-auto flex flex-col items-center">
+    <main class="mx-auto flex flex-col items-center">
       <header
         class="px-12 py-3 bg-white dark:bg-zinc-900 z-50 w-full sticky top-0 flex items-center justify-center md:justify-start"
       >
@@ -65,56 +67,61 @@ const currentYear = new Date().getFullYear();
           Black Meredith Press
         </p>
       </header>
-
       <div class="h-quarter-screen md:h-half-screen"></div>
-      <Div header>
+      <Section>
         <H1>Black Meredith Press</H1>
         <p
-          class="px-10 text-2xl lg:text-3xl text-center text-zinc-500 dark:text-zinc-400"
+          class="px-10 text-xl lg:text-2xl text-center text-zinc-500 dark:text-zinc-300/80"
         >
           an Independent Book Publisher
           <span class="block md:inline">for the Surreal yet Familiar</span>
         </p>
-      </Div>
-      <Div>
+      </Section>
+      <Section>
         <H1>About</H1>
-        <p class="mt-4 md:text-justify">
-          Founded in 2017 by Brittani S. Avery, Black Meredith Press specializes
-          in literary fantasy and science fiction that create people and places
-          surreal yet familiar. Our mission is to open the doors of imagination
-          and give readers access to unique worlds created by new authors
-          hailing from diverse and exceptional backgrounds. We are dedicated to
-          fostering creative expression, ensuring that every book we publish
-          brings readers on unforgettable journeys to uncharted literary realms.
-        </p>
-        <p class="mt-4 md:text-justify">
-          The name “Black Meredith Press” was inspired by the trees of our
-          fonder’s childhood home. In her youth, Avery spent countless hours
-          exploring the cluster of trees in her backyard. She, along with her
-          siblings, cousins, and friends, created numerous worlds underneath the
-          shade of the leaves. They fought aliens, practiced swordplay with
-          sticks, hiked mountains, launched spy missions. These fond memories of
-          vibrant imagination and peek creativity presented the perfect name for
-          her new publisher.
-        </p>
-      </Div>
-      <Div>
+        <Prose>
+          <p>
+            Founded in 2017 by Brittani S. Avery, Black Meredith Press
+            specializes in literary fantasy and science fiction that create
+            people and places surreal yet familiar. Our mission is to open the
+            doors of imagination and give readers access to unique worlds
+            created by new authors hailing from diverse and exceptional
+            backgrounds. We are dedicated to fostering creative expression,
+            ensuring that every book we publish brings readers on unforgettable
+            journeys to uncharted literary realms.
+          </p>
+          <p>
+            The name “Black Meredith Press” was inspired by the trees of our
+            fonder’s childhood home. In her youth, Avery spent countless hours
+            exploring the cluster of trees in her backyard. She, along with her
+            siblings, cousins, and friends, created numerous worlds underneath
+            the shade of the leaves. They fought aliens, practiced swordplay
+            with sticks, hiked mountains, launched spy missions. These fond
+            memories of vibrant imagination and peek creativity presented the
+            perfect name for her new publisher.
+          </p>
+        </Prose>
+      </Section>
+      <Section>
         <H1>Authors</H1>
         <ul
           role="list"
           class="py-6 divide-y divide-zinc-300 dark:divide-zinc-950"
         >
-          {authors.map((author) => <Author {...author} />)}
+          {authors.map((author) => <AuthorCard author={author} />)}
         </ul>
-      </Div>
-      <Div>
+      </Section>
+      <Section>
         <H1>Contact</H1>
-        <p class="mt-4 md:text-justify">
-          If you would like more information on Black Meredith Press or our
-          authors, please contact us with the form below.
-        </p>
-      </Div>
+        <Prose>
+          <p>
+            If you would like more information on Black Meredith Press or our
+            authors, please contact us with the form below.
+          </p>
+        </Prose>
+      </Section>
     </main>
+
     <footer
       class="flex items-center justify-center h-10 border-t bg-white/90 dark:bg-zinc-900/20 border-t-zinc-900/10 dark:border-t-zinc-200/10"
     >

@@ -9,11 +9,13 @@ interface Props {
 const { header, classes } = Astro.props;
 ---
 
-<div
+<section
   class={clsx(
     "bg-white dark:bg-zinc-900 w-full py-6 px-12 lg:py-12 lg:px-24 mb-screen last:mb-half-screen",
     classes
   )}
 >
-  <slot />
-</div>
+  <div class="max-w-screen-xl mx-auto">
+    <slot />
+  </div>
+</section>

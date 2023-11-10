@@ -19,7 +19,19 @@ export default {
         "half-screen": "50vh",
         screen: "100vh",
       },
+      typography: {
+        xl: {
+          css: {
+            lineHeight: defaultTheme.fontSize.xl[1].lineHeight,
+          },
+        },
+        "2xl": {
+          css: {
+            lineHeight: defaultTheme.fontSize["2xl"][1].lineHeight,
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
