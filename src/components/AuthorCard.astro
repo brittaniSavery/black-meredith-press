@@ -1,7 +1,15 @@
 ---
-import { Fragment } from "react";
 import type { CollectionEntry } from "astro:content";
-import Prose from "../components/Prose.astro";
+import { Fragment } from "react";
+import { Image } from "astro:assets";
+import Prose from "@components/Prose.astro";
+import SocialLink from "@components/SocialLink.astro";
+
+import hardcoverIcon from "@socialIcons/hardcover.svg";
+import facebookIcon from "@socialIcons/facebook.svg";
+import instagramIcon from "@socialIcons/instagram.svg";
+import twitterIcon from "@socialIcons/x-twitter.svg";
+import goodreadsIcon from "@socialIcons/goodreads.svg";
 
 interface Props {
   author: CollectionEntry<"authors">;
@@ -9,8 +17,9 @@ interface Props {
 
 const { author } = Astro.props;
 const {
-  data: { photo, genres, name, socials },
+  data: { photo, genres, firstName, lastName, socials },
 } = author;
+const { facebook, instagram, twitter, goodreads, hardcover } = socials;
 const { Content } = await author.render();
 ---
 
@@ -18,23 +27,50 @@ const { Content } = await author.render();
   <li
     class="flex flex-col md:flex-row items-center md:items-start py-4 first:pt-0 last:pb-0"
   >
-    <img
-      class="h-48 w-48 rounded-full md:self-center border-2 border-zinc-900/50 dark:border-zinc-300"
-      src={photo
-        ? `/img/authors/${photo}`
-        : "https://placehold.co/600x600?text=Photo\\nComing\\nSoon"}
+    <Image
+      src={photo}
       alt=""
+      class="mb-3 md:mb-0 h-48 w-48 rounded-full border-2 border-zinc-900/50 dark:border-zinc-300"
     />
     <div class="md:ml-4">
-      <h2 class="font-serif text-2xl lg:text-4xl">{name}</h2>
+      <h2 class="font-serif text-2xl lg:text-4xl">
+        {`${firstName} ${lastName}`}
+      </h2>
       <p class="mb-4">
         <span class="font-bold">Genres:</span>&nbsp;{genres.join(", ")}
       </p>
       <Prose>
         <Content />
+        <p>
+          Also, be sure to follow {lastName} on social media:
+        </p>
       </Prose>
 
-      <!-- TODO: Add Social links with icons (hide name on small screens) -->
+      <ul class="flex flex-wrap mt-1 gap-4">
+        <li class="border border-zinc-400 rounded-lg p-2 lg:text-lg">
+          <SocialLink site="Facebook" icon={facebookIcon} url={facebook} />
+        </li>
+        <li class="border border-zinc-400 rounded-lg p-2 lg:text-lg">
+          <SocialLink site="Instagram" icon={instagramIcon} url={instagram} />
+        </li>
+        <li class="border border-zinc-400 rounded-lg p-2 lg:text-lg">
+          <SocialLink site="X/Twitter" icon={twitterIcon} url={twitter} />
+        </li>
+        <li class="border border-zinc-400 rounded-lg p-2 lg:text-lg">
+          <SocialLink site="Goodreads" icon={goodreadsIcon} url={goodreads} />
+        </li>
+        {
+          hardcover && (
+            <li class="border border-zinc-400 rounded-lg p-2 lg:text-lg">
+              <SocialLink
+                site="Hardcover"
+                icon={hardcoverIcon}
+                url={hardcover}
+              />
+            </li>
+          )
+        }
+      </ul>
     </div>
   </li>
 </Fragment>

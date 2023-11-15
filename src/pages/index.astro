@@ -6,6 +6,13 @@ import "@fontsource/darker-grotesque";
 
 import { getCollection } from "astro:content";
 
+import Section from "@components/Section.astro";
+import H1 from "@components/H1.astro";
+import AuthorCard from "@components/AuthorCard.astro";
+import Prose from "@components/Prose.astro";
+
+import logoLight from "@images/logo-light.svg";
+import logoDark from "@images/logo-dark.svg";
 import Section from "../components/Section.astro";
 import H1 from "../components/H1.astro";
 import AuthorCard from "../components/AuthorCard.astro";
@@ -46,22 +53,19 @@ const authors = await getCollection("authors");
       crossorigin="anonymous"></script>
   </head>
   <body
-    class="bg-[url('/img/background-light.png')] bg-no-repeat bg-center bg-cover bg-fixed bg-zinc-300 text-zinc-900 dark:bg-none dark:bg-zinc-900 dark:text-zinc-300 font-medium text-xl lg:text-2xl min-h-screen m-0"
+    class="bg-mobile-light dark:bg-mobile-dark md:bg-light dark:md:bg-dark bg-no-repeat bg-center bg-cover bg-fixed bg-zinc-300 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-300 font-medium text-xl lg:text-2xl min-h-screen m-0"
   >
     <main class="mx-auto flex flex-col items-center">
       <header
-        class="px-12 py-3 bg-white dark:bg-zinc-900 z-50 w-full sticky top-0 flex items-center justify-center md:justify-start"
+        class="px-12 py-3 bg-zinc-50 dark:bg-zinc-900 z-50 w-full sticky top-0 flex items-center justify-center md:justify-start"
       >
         <picture class="pr-2 h-32 w-32 md:h-16 md:w-16">
           <source
-            srcset="img/logo-light.svg"
+            srcset={logoLight.src}
             media="(prefers-color-scheme: light) or (prefers-color-scheme: no-preference)"
           />
-          <source
-            srcset="img/logo-dark.svg"
-            media="(prefers-color-scheme: dark)"
-          />
-          <img src="img/logo-light.svg" alt="Black Meredith Press Logo" />
+          <source srcset={logoDark.src} media="(prefers-color-scheme: dark)" />
+          <img src={logoLight.src} alt="Black Meredith Press Logo" />
         </picture>
         <p class="text-2xl font-medium font-serif hidden md:block">
           Black Meredith Press

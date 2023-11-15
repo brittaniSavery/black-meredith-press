@@ -1,0 +1,15 @@
+---
+import { Image } from "astro:assets";
+interface Props {
+  site: string;
+  icon: ImageMetadata;
+  url: string;
+}
+
+const { site, icon, url } = Astro.props;
+---
+
+<a class="flex items-end gap-2" href={url}>
+  <Image src={icon} alt={`${site} Icon`} class="h-6 w-auto" />
+  <span class="hidden md:block">{site}</span>
+</a>

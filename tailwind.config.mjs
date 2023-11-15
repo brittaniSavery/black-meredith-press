@@ -6,6 +6,12 @@ export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      backgroundImage: {
+        light: "url('/background-light.svg')",
+        dark: "url('/background-dark.svg')",
+        "mobile-light": "url('/mobile-background-light.svg')",
+        "mobile-dark": "url('/mobile-background-dark.svg')",
+      },
       fontFamily: {
         sans: [
           "Darker Grotesque Variable",
