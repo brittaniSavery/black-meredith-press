@@ -13,10 +13,7 @@ import Prose from "@components/Prose.astro";
 
 import logoLight from "@images/logo-light.svg";
 import logoDark from "@images/logo-dark.svg";
-import Section from "../components/Section.astro";
-import H1 from "../components/H1.astro";
-import AuthorCard from "../components/AuthorCard.astro";
-import Prose from "../components/Prose.astro";
+import { ContactForm } from "@components/ContactForm";
 
 const currentYear = new Date().getFullYear();
 const authors = await getCollection("authors");
@@ -47,10 +44,10 @@ const authors = await getCollection("authors");
     </script>
     <!-- End Matomo Tag Manager -->
 
-    <!-- Font Awesome -->
     <script
-      src="https://kit.fontawesome.com/205447cb05.js"
-      crossorigin="anonymous"></script>
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer></script>
   </head>
   <body
     class="bg-mobile-light dark:bg-mobile-dark md:bg-light dark:md:bg-dark bg-no-repeat bg-center bg-cover bg-fixed bg-zinc-300 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-300 font-medium text-xl lg:text-2xl min-h-screen m-0"
@@ -123,6 +120,7 @@ const authors = await getCollection("authors");
             authors, please contact us with the form below.
           </p>
         </Prose>
+        <ContactForm client:load />
       </Section>
     </main>
 
