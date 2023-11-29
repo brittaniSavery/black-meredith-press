@@ -1,91 +1,71 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { ReactNode } from "react";
+import Turnstile from "react-turnstile";
+import { Fragment, type ReactNode } from "react";
 
 type ContactFormType = {
   name: string;
   email: string;
   subject?: string;
   body: string;
+  captchaToken: string;
 };
 
-const validation = z
-  .object({
-    name: z.string().min(1, "Enter your name."),
-    email: z.string().email("Enter a valid email address."),
-    subject: z.string().optional(),
-    body: z.string().min(75, "Include a message of at least 75 characters."),
-  })
-  .required();
+const validation = z.object({
+  name: z.string().min(1, "Enter your name."),
+  email: z.string().email("Enter a valid email address."),
+  subject: z.string().optional(),
+  body: z.string().min(75, "Include a message of at least 75 characters."),
+  captchaToken: z.string(),
+});
 
 export function ContactForm() {
   const {
     watch,
     register,
     handleSubmit,
-    formState: { errors },
+    setValue,
+    formState: { errors, isSubmitSuccessful },
   } = useForm<ContactFormType>({
-    defaultValues: { email: "", body: "", name: "", subject: "" },
+    defaultValues: {
+      email: "",
+      body: "",
+      name: "",
+      subject: "",
+      captchaToken: "",
+    },
     resolver: zodResolver(validation),
   });
 
-  const watchBody = watch("body");
+  const messageLength = watch("body").length;
 
   const onSubmit: SubmitHandler<ContactFormType> = (values) =>
     console.log(values);
 
-  return (
-    <form
-      noValidate
-      onSubmit={handleSubmit(onSubmit)}
-      className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-8 mt-8"
-    >
-      <label className="flex flex-col gap-2">
-        Name{" "}
-        <input
-          className="bg-zinc-200/90 dark:bg-zinc-700 rounded-lg px-4 py-1"
-          {...register("name")}
-        />
-        <ErrorMessage>{errors.name?.message}</ErrorMessage>
-      </label>
-
-      <label className="flex flex-col gap-2">
-        Email{" "}
-        <input
-          type="email"
-          className="bg-zinc-200/90 dark:bg-zinc-700 rounded-lg px-4 py-1"
-          {...register("email")}
-        />
-        <ErrorMessage>{errors.email?.message}</ErrorMessage>
-      </label>
-      <label className="flex flex-col gap-2 md:col-span-2">
-        Subject{" "}
-        <input
-          className="bg-zinc-200/90 dark:bg-zinc-700 rounded-lg px-4 py-1"
-          {...register("subject")}
-        />
-      </label>
-      <label className="flex flex-col gap-2 md:col-span-2">
-        <span>
-          Message{" "}
-          {watchBody.length < 75 && `(${watchBody.length}/75 characters)`}
-        </span>
-
-        <textarea
-          className="bg-zinc-200/90 dark:bg-zinc-700 rounded-lg w-full h-32 px-4"
-          {...register("body")}
-        />
-        <ErrorMessage>{errors.body?.message}</ErrorMessage>
-      </label>
-      <button
-        type="submit"
-        className="border border-zinc-400 rounded-lg p-2 text-left w-fit"
-      >
-        Send
-      </button>
-    </form>
-  );
+  if (isSubmitSuccessful) {
+    return (
+      <div className="flex flex-col gap-3 mt-3">
+        <div className="flex gap-1 items-baseline self-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+            className="fill-teal-900 dark:fill-teal-200 h-4 w-4 lg:h-6 lg:w-6"
+          >
+            {/* Font Awesome Free 6.5.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc. */}
+            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
+          </svg>
+          <p className="text-teal-800 dark:text-teal-200 font-bold text-center text-2xl lg:text-4xl">
+            Message Sent Successfully!
+          </p>
+        </div>
+        <p>
+          We have received your message and will respond in 3-5 business days,
+          if not sooner. Thank you for your interest in Black Meredith Press.
+        </p>
+      </div>
+    );
+  }
 }
 
 function ErrorMessage({ children }: { children: ReactNode }) {

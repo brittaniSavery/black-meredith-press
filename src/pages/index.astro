@@ -43,11 +43,6 @@ const authors = await getCollection("authors");
       })();
     </script>
     <!-- End Matomo Tag Manager -->
-
-    <script
-      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-      async
-      defer></script>
   </head>
   <body
     class="bg-mobile-light dark:bg-mobile-dark md:bg-light dark:md:bg-dark bg-no-repeat bg-center bg-cover bg-fixed bg-zinc-300 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-300 font-medium text-xl lg:text-2xl min-h-screen m-0"
@@ -114,12 +109,6 @@ const authors = await getCollection("authors");
       </Section>
       <Section>
         <H1>Contact</H1>
-        <Prose>
-          <p>
-            If you would like more information on Black Meredith Press or our
-            authors, please contact us with the form below.
-          </p>
-        </Prose>
         <ContactForm client:load />
       </Section>
     </main>
