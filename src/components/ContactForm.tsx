@@ -4,15 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Turnstile from "react-turnstile";
 import { Fragment, type ReactNode } from "react";
 
-type ContactFormType = {
-  name: string;
-  email: string;
-  subject?: string;
-  body: string;
-  captchaToken: string;
-};
-
-const validation = z.object({
+export const ContactFormSchema = z.object({
   name: z.string().min(1, "Enter your name."),
   email: z.string().email("Enter a valid email address."),
   subject: z.string().optional(),
@@ -20,12 +12,15 @@ const validation = z.object({
   captchaToken: z.string(),
 });
 
+export type ContactFormType = z.infer<typeof ContactFormSchema>;
+
 export function ContactForm() {
   const {
     watch,
     register,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors, isSubmitSuccessful },
   } = useForm<ContactFormType>({
     defaultValues: {
@@ -35,13 +30,22 @@ export function ContactForm() {
       subject: "",
       captchaToken: "",
     },
-    resolver: zodResolver(validation),
+    resolver: zodResolver(ContactFormSchema),
   });
 
   const messageLength = watch("body").length;
 
-  const onSubmit: SubmitHandler<ContactFormType> = (values) =>
-    console.log(values);
+  const onSubmit: SubmitHandler<ContactFormType> = async (values) => {
+    const result = await fetch(`/message`, {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
+
+    if (!result.ok) {
+      const error = await result.text();
+      setError("root", { message: error });
+    }
+  };
 
   if (isSubmitSuccessful) {
     return (
@@ -66,6 +70,71 @@ export function ContactForm() {
       </div>
     );
   }
+
+  return (
+    <Fragment>
+      <p>
+        If you would like more information on Black Meredith Press or our
+        authors, please contact us with the form below.
+      </p>
+
+      <form
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-y-8 mt-8"
+      >
+        <label className="flex flex-col gap-2">
+          Name{" "}
+          <input
+            className="bg-zinc-200/90 dark:bg-zinc-700 rounded-lg px-4 py-1"
+            {...register("name")}
+          />
+          <ErrorMessage>{errors.name?.message}</ErrorMessage>
+        </label>
+
+        <label className="flex flex-col gap-2">
+          Email{" "}
+          <input
+            type="email"
+            className="bg-zinc-200/90 dark:bg-zinc-700 rounded-lg px-4 py-1"
+            {...register("email")}
+          />
+          <ErrorMessage>{errors.email?.message}</ErrorMessage>
+        </label>
+        <label className="flex flex-col gap-2 md:col-span-2">
+          Subject (optional){" "}
+          <input
+            className="bg-zinc-200/90 dark:bg-zinc-700 rounded-lg px-4 py-1"
+            {...register("subject")}
+          />
+        </label>
+        <label className="flex flex-col gap-2 md:col-span-2">
+          <span>
+            Message {messageLength < 75 && `(${messageLength}/75 characters)`}
+          </span>
+
+          <textarea
+            className="bg-zinc-200/90 dark:bg-zinc-700 rounded-lg w-full h-32 px-4"
+            {...register("body")}
+          />
+          <ErrorMessage>{errors.body?.message}</ErrorMessage>
+        </label>
+        <div className="flex flex-col gap-2 md:col-span-2">
+          <Turnstile
+            sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY}
+            onVerify={(token) => setValue("captchaToken", token)}
+          />
+          <input type="hidden" {...register("captchaToken")} />
+          <ErrorMessage>{errors.root?.message}</ErrorMessage>
+        </div>
+        <input
+          type="submit"
+          value="Send"
+          className="border border-zinc-400 rounded-lg p-2 text-left w-fit md:col-span-2"
+        />
+      </form>
+    </Fragment>
+  );
 }
 
 function ErrorMessage({ children }: { children: ReactNode }) {
