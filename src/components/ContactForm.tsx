@@ -130,7 +130,7 @@ export function ContactForm() {
         <input
           type="submit"
           value="Send"
-          className="border border-zinc-400 rounded-lg p-2 text-left w-fit md:col-span-2"
+          className="border border-zinc-400 rounded-lg p-2 text-left w-fit md:col-span-2 cursor-pointer"
         />
       </form>
     </Fragment>
