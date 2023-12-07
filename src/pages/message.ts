@@ -2,9 +2,8 @@ import {
   ContactFormSchema,
   type ContactFormType,
 } from "@components/ContactForm";
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import type { APIRoute } from "astro";
-import { fromEnv } from "@aws-sdk/credential-providers";
+import postmark from "postmark";
 
 type TurnstileChallengeResponse = {
   success: boolean;
@@ -65,42 +64,29 @@ export const POST: APIRoute = async ({ request }) => {
 
   // Send email
   const { body, email, name, subject } = message;
-  const sesClient = new SESClient({
-    region: "us-west-2",
-    credentials: fromEnv(),
+  const client = new postmark.ServerClient(
+    import.meta.env.POSTMARK_SERVER_API_KEY
+  );
+
+  const result = await client.sendEmail({
+    From: import.meta.env.SOURCE_EMAIL,
+    To: import.meta.env.DESTINATION_EMAIL,
+    Subject: `Contact Form Message from ${name}${subject && `: ${subject}`}`,
+    ReplyTo: email,
+    TextBody: `${name} just filled out the Contact Form on blackmeredithpress.com. Here is what they had to say:
+          
+    ${body}
+    
+    Just reply to this email and you'll be able to answer ${name} at ${email}.`,
+    MessageStream: "outbound",
   });
 
-  const sendEmailCommand = new SendEmailCommand({
-    Destination: { ToAddresses: [import.meta.env.DESTINATION_EMAIL] },
-    Source: import.meta.env.SOURCE_EMAIL,
-    ReplyToAddresses: [email],
-    Message: {
-      Subject: {
-        Data: `Contact Form Message from ${name}${subject && `: ${subject}`}`,
-        Charset: "UTF-8",
-      },
-      Body: {
-        Text: {
-          Data: `${name} just filled out the Contact Form on blackmeredithpress.com. Here is what they had to say:
-          
-          ${body}
-          
-          Just reply to this email and you'll be able to answer ${name} at ${email}.`,
-          Charset: "UTF-8",
-        },
-      },
-    },
-  });
-
-  try {
-    await sesClient.send(sendEmailCommand);
-    return new Response();
-  } catch (error) {
-    console.log(error);
-
+  if (result.ErrorCode) {
     return new Response(
       "Unable to send email message. Please try again later.",
       { status: 400 }
     );
   }
+
+  return new Response();
 };
