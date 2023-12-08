@@ -19,10 +19,6 @@ type TurnstileChallengeSuccess = TurnstileChallengeResponse & {
 
 export const prerender = false;
 
-export const GET: APIRoute = async () => {
-  return new Response();
-};
-
 export const POST: APIRoute = async ({ request }) => {
   const message: ContactFormType = await request.json();
 
