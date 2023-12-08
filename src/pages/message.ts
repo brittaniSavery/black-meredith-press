@@ -10,13 +10,6 @@ type TurnstileChallengeResponse = {
   "error-codes": string[];
 };
 
-type TurnstileChallengeSuccess = TurnstileChallengeResponse & {
-  challenge_ts: string;
-  hostname: string;
-  cdata: string;
-  action: string;
-};
-
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
