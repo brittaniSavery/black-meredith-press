@@ -37,9 +37,7 @@ const authors = await getCollection("authors");
           g = d.createElement("script"),
           s = d.getElementsByTagName("script")[0];
         g.async = true;
-        g.src = `${
-          import.meta.env.PUBLIC_ANALYTICS_URL
-        }/js/container_RxOmpjG1.js`;
+        g.src = import.meta.env.PUBLIC_ANALYTICS_URL;
         if (s.parentNode) s.parentNode.insertBefore(g, s);
       })();
     </script>
