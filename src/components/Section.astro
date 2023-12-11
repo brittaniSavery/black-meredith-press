@@ -2,13 +2,15 @@
 import clsx from "clsx";
 
 interface Props {
+  id: string;
   classes?: string;
 }
 
-const { classes } = Astro.props;
+const { classes, id } = Astro.props;
 ---
 
 <section
+  id={id}
   class={clsx(
     "bg-zinc-50 dark:bg-zinc-900 w-full py-6 px-12 lg:py-12 lg:px-24 mb-screen last:mb-half-screen",
     classes

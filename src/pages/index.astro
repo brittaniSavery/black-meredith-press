@@ -63,7 +63,7 @@ const authors = await getCollection("authors");
         </p>
       </header>
       <div class="h-quarter-screen md:h-half-screen"></div>
-      <Section>
+      <Section id="intro">
         <H1>Black Meredith Press</H1>
         <p
           class="px-10 text-xl lg:text-2xl text-center text-zinc-500 dark:text-zinc-300/80"
@@ -72,7 +72,7 @@ const authors = await getCollection("authors");
           <span class="block md:inline">for the Surreal yet Familiar</span>
         </p>
       </Section>
-      <Section>
+      <Section id="about">
         <H1>About</H1>
         <Prose>
           <p>
@@ -97,7 +97,7 @@ const authors = await getCollection("authors");
           </p>
         </Prose>
       </Section>
-      <Section>
+      <Section id="authors">
         <H1>Authors</H1>
         <ul
           role="list"
@@ -106,7 +106,7 @@ const authors = await getCollection("authors");
           {authors.map((author) => <AuthorCard author={author} />)}
         </ul>
       </Section>
-      <Section>
+      <Section id="contact">
         <H1>Contact</H1>
         <ContactForm client:only="react" />
       </Section>
